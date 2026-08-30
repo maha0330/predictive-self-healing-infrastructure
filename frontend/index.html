@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SelfHeal AI</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #080b12;
+            color: white;
+        }
+
+        /* =========================
+           SIDEBAR
+        ========================== */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+
+            width: 230px;
+            height: 100vh;
+
+            background: #0d111a;
+
+            border-right: 1px solid #202633;
+
+            padding: 25px 15px;
+        }
+
+        .logo {
+            font-size: 23px;
+            font-weight: bold;
+
+            margin-bottom: 40px;
+        }
+
+        .logo span {
+            color: #00e5a0;
+        }
+
+        .menu {
+            padding: 14px;
+
+            margin-bottom: 8px;
+
+            border-radius: 8px;
+
+            color: #8993a3;
+
+            cursor: pointer;
+        }
+
+        .menu:hover,
+        .menu.active {
+            background: #14231f;
+
+            color: #00e5a0;
+        }
+
+
+        /* =========================
+           MAIN
+        ========================== */
+
+        .main {
+            margin-left: 230px;
+
+            padding: 30px;
+        }
+
+
+        /* =========================
+           HEADER
+        ========================== */
+
+        .header {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+        }
+
+        .header p {
+            color: #7d8798;
+
+            margin-top: 7px;
+        }
+
+        .system-status {
+            background: #10261f;
+
+            color: #00e5a0;
+
+            padding: 10px 16px;
+
+            border-radius: 20px;
+
+            font-size: 13px;
+        }
+
+
+        /* =========================
+           METRIC CARDS
+        ========================== */
+
+        .cards {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 18px;
+        }
+
+        .card {
+            background: #0d111a;
+
+            border: 1px solid #202633;
+
+            border-radius: 14px;
+
+            padding: 20px;
+        }
+
+        .card-title {
+            color: #8993a3;
+
+            font-size: 14px;
+        }
+
+        .card-value {
+            font-size: 30px;
+
+            margin-top: 12px;
+
+            font-weight: bold;
+        }
+
+        .green {
+            color: #00e5a0;
+        }
+
+        .yellow {
+            color: #ffc857;
+        }
+
+        .red {
+            color: #ff5c70;
+        }
+
+
+        /* =========================
+           PROGRESS BAR
+        ========================== */
+
+        .progress {
+            width: 100%;
+
+            height: 6px;
+
+            background: #202633;
+
+            margin-top: 15px;
+
+            border-radius: 10px;
+
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+
+            background: #00e5a0;
+
+            width: 0%;
+
+            transition: width 0.5s;
+        }
+
+
+        /* =========================
+           CONTENT GRID
+        ========================== */
+
+        .grid {
+            display: grid;
+
+            grid-template-columns:
+                2fr 1fr;
+
+            gap: 18px;
+
+            margin-top: 20px;
+        }
+
+        .panel {
+            background: #0d111a;
+
+            border: 1px solid #202633;
+
+            border-radius: 14px;
+
+            padding: 20px;
+        }
+
+        .panel h2 {
+            font-size: 18px;
+
+            margin-bottom: 20px;
+        }
+
+
+        /* =========================
+           SERVICE HEALTH
+        ========================== */
+
+        .service {
+            display: flex;
+
+            justify-content: space-between;
+
+            padding: 15px 0;
+
+            border-bottom:
+                1px solid #202633;
+        }
+
+        .service:last-child {
+            border-bottom: none;
+        }
+
+        .healthy {
+            color: #00e5a0;
+        }
+
+        .unhealthy {
+            color: #ff5c70;
+        }
+
+
+        /* =========================
+           PREDICTION
+        ========================== */
+
+        .prediction {
+            background: #17131a;
+
+            border: 1px solid #382933;
+
+            border-radius: 10px;
+
+            padding: 18px;
+        }
+
+        .prediction-title {
+            display: flex;
+
+            justify-content: space-between;
+        }
+
+        .risk {
+            color: #ffc857;
+
+            font-weight: bold;
+        }
+
+        .prediction p {
+            color: #8b94a4;
+
+            margin-top: 10px;
+
+            font-size: 14px;
+        }
+
+
+        /* =========================
+           BUTTON
+        ========================== */
+
+        button {
+            border: none;
+
+            background: #00e5a0;
+
+            color: #06100c;
+
+            padding: 10px 16px;
+
+            border-radius: 8px;
+
+            margin-top: 15px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+        }
+
+        button:hover {
+            opacity: 0.85;
+        }
+
+
+        /* =========================
+           HEALING STATUS
+        ========================== */
+
+        .healing-box {
+            background: #10151f;
+
+            border-radius: 10px;
+
+            padding: 18px;
+        }
+
+        .healing-status {
+            color: #00e5a0;
+
+            font-weight: bold;
+
+            margin-top: 10px;
+        }
+
+
+        /* =========================
+           RESPONSIVE
+        ========================== */
+
+        @media(max-width: 1000px) {
+
+            .cards {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media(max-width: 700px) {
+
+            .sidebar {
+                display: none;
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .header {
+                flex-direction: column;
+
+                align-items: flex-start;
+
+                gap: 15px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         SIDEBAR
+    ========================== -->
+
+    <div class="sidebar">
+
+        <div class="logo">
+            SelfHeal<span>AI</span>
+        </div>
+
+        <div class="menu active">
+            📊 Dashboard
+        </div>
+
+        <div class="menu">
+            🖥 Infrastructure
+        </div>
+
+        <div class="menu">
+            🔮 Predictions
+        </div>
+
+        <div class="menu">
+            🚨 Alerts
+        </div>
+
+        <div class="menu">
+            🔧 Healing Actions
+        </div>
+
+        <div class="menu">
+            📜 Activity Logs
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         MAIN CONTENT
+    ========================== -->
+
+    <div class="main">
+
+
+        <!-- HEADER -->
+
+        <div class="header">
+
+            <div>
+
+                <h1>
+                    Infrastructure Overview
+                </h1>
+
+                <p>
+                    Predictive monitoring & autonomous self-healing
+                </p>
+
+            </div>
+
+
+            <div
+                class="system-status"
+                id="systemStatus">
+
+                ● System Operational
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             METRIC CARDS
+        ========================== -->
+
+        <div class="cards">
+
+
+            <!-- CPU -->
+
+            <div class="card">
+
+                <div class="card-title">
+                    CPU Usage
+                </div>
+
+                <div
+                    class="card-value green"
+                    id="cpuValue">
+
+                    --%
+
+                </div>
+
+                <div class="progress">
+
+                    <div
+                        class="progress-bar"
+                        id="cpuBar">
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- MEMORY -->
+
+            <div class="card">
+
+                <div class="card-title">
+                    Memory Usage
+                </div>
+
+                <div
+                    class="card-value yellow"
+                    id="memoryValue">
+
+                    --%
+
+                </div>
+
+                <div class="progress">
+
+                    <div
+                        class="progress-bar"
+                        id="memoryBar">
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- RESPONSE TIME -->
+
+            <div class="card">
+
+                <div class="card-title">
+                    Response Time
+                </div>
+
+                <div
+                    class="card-value"
+                    id="responseValue">
+
+                    -- ms
+
+                </div>
+
+            </div>
+
+
+            <!-- ERROR RATE -->
+
+            <div class="card">
+
+                <div class="card-title">
+                    Error Rate
+                </div>
+
+                <div
+                    class="card-value red"
+                    id="errorValue">
+
+                    --%
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             SERVICE + PREDICTION
+        ========================== -->
+
+        <div class="grid">
+
+
+            <!-- SERVICE HEALTH -->
+
+            <div class="panel">
+
+                <h2>
+                    🖥 Service Health
+                </h2>
+
+
+                <div class="service">
+
+                    <span>
+                        Payment Service
+                    </span>
+
+                    <span
+                        class="healthy"
+                        id="paymentStatus">
+
+                        ● Healthy
+
+                    </span>
+
+                </div>
+
+
+                <div class="service">
+
+                    <span>
+                        Order Service
+                    </span>
+
+                    <span class="healthy">
+
+                        ● Healthy
+
+                    </span>
+
+                </div>
+
+
+                <div class="service">
+
+                    <span>
+                        User Service
+                    </span>
+
+                    <span class="healthy">
+
+                        ● Healthy
+
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- PREDICTION -->
+
+            <div class="panel">
+
+                <h2>
+                    🔮 Failure Prediction
+                </h2>
+
+
+                <div class="prediction">
+
+                    <div class="prediction-title">
+
+                        <strong>
+                            Payment Service
+                        </strong>
+
+                        <span
+                            class="risk"
+                            id="riskLevel">
+
+                            Monitoring
+
+                        </span>
+
+                    </div>
+
+
+                    <p id="predictionText">
+
+                        AI is monitoring
+                        infrastructure metrics.
+
+                    </p>
+
+
+                    <button
+                        onclick="getMetrics()">
+
+                        Analyze Now
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             SELF HEALING
+        ========================== -->
+
+        <div class="grid">
+
+
+            <div class="panel">
+
+                <h2>
+                    🔧 Self-Healing Engine
+                </h2>
+
+
+                <div class="healing-box">
+
+                    <p>
+                        Current Status
+                    </p>
+
+                    <div
+                        class="healing-status"
+                        id="healingStatus">
+
+                        ● Monitoring
+
+                    </div>
+                    <button
+                    onclick="simulateFailure()">
+                    
+                        Simulate Failure
+                    </button>
+                    <button
+                        onclick="recoverService()">
+
+                        Start Self-Healing
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- LIVE MONITORING -->
+
+            <div class="panel">
+
+                <h2>
+                    📡 Live Monitoring
+                </h2>
+
+                <p
+                    id="lastUpdate"
+                    style="color:#00e5a0">
+
+                    Waiting for data...
+
+                </p>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- =========================
+         JAVASCRIPT
+    ========================== -->
+
+<script>
+
+    const API_URL = "http://127.0.0.1:8000";
+
+
+    // ==========================================
+    // GET METRICS
+    // ==========================================
+
+    async function getMetrics() {
+
+        try {
+
+            const response = await fetch(
+                API_URL + "/metrics"
+            );
+
+            const data = await response.json();
+
+
+            // CPU
+
+            document.getElementById("cpuValue").innerText =
+                data.cpu + "%";
+
+            document.getElementById("cpuBar").style.width =
+                data.cpu + "%";
+
+
+            // MEMORY
+
+            document.getElementById("memoryValue").innerText =
+                data.memory + "%";
+
+            document.getElementById("memoryBar").style.width =
+                data.memory + "%";
+
+
+            // RESPONSE TIME
+
+            document.getElementById("responseValue").innerText =
+                data.response_time_ms + " ms";
+
+
+            // ERROR RATE
+
+            document.getElementById("errorValue").innerText =
+                data.error_rate + "%";
+
+
+            // Calculate prediction
+
+            calculateRisk(data);
+
+
+            // Check service health
+
+            checkHealth();
+
+
+            // Update time
+
+            document.getElementById("lastUpdate").innerText =
+                "Last update: " +
+                new Date().toLocaleTimeString();
+
+        }
+
+        catch (error) {
+
+            console.error("Metrics error:", error);
+
+            document.getElementById("lastUpdate").innerText =
+                "❌ Backend connection failed";
+
+        }
+
+    }
+
+
+    // ==========================================
+    // CHECK PAYMENT SERVICE HEALTH
+    // ==========================================
+
+    async function checkHealth() {
+
+        try {
+
+            const response = await fetch(
+                API_URL + "/health"
+            );
+
+            const data = await response.json();
+
+
+            const paymentStatus =
+                document.getElementById("paymentStatus");
+
+            const systemStatus =
+                document.getElementById("systemStatus");
+
+
+            if (data.status === "healthy") {
+
+                paymentStatus.innerText =
+                    "● Healthy";
+
+                paymentStatus.className =
+                    "healthy";
+
+
+                systemStatus.innerText =
+                    "● System Operational";
+
+                systemStatus.style.color =
+                    "#00e5a0";
+
+            }
+
+            else {
+
+                paymentStatus.innerText =
+                    "● Unhealthy";
+
+                paymentStatus.className =
+                    "unhealthy";
+
+
+                systemStatus.innerText =
+                    "● Service Failure";
+
+                systemStatus.style.color =
+                    "#ff5c70";
+
+            }
+
+        }
+
+        catch (error) {
+
+            console.error("Health error:", error);
+
+        }
+
+    }
+
+
+    // ==========================================
+    // SIMULATE FAILURE
+    // ==========================================
+
+    async function simulateFailure() {
+
+        const healingStatus =
+            document.getElementById("healingStatus");
+
+
+        healingStatus.innerText =
+            "⚠️ Simulating failure...";
+
+
+        try {
+
+            const response = await fetch(
+                API_URL + "/simulate/failure",
+                {
+                    method: "POST"
+                }
+            );
+
+
+            const data = await response.json();
+
+            console.log(data);
+
+
+            healingStatus.innerText =
+                "❌ Failure detected";
+
+
+            // Immediately update dashboard
+
+            await checkHealth();
+
+
+            await getMetrics();
+
+        }
+
+        catch (error) {
+
+            console.error(error);
+
+            healingStatus.innerText =
+                "❌ Could not simulate failure";
+
+        }
+
+    }
+
+
+    // ==========================================
+    // SELF HEALING / RECOVER
+    // ==========================================
+
+    async function recoverService() {
+
+        const healingStatus =
+            document.getElementById("healingStatus");
+
+
+        healingStatus.innerText =
+            "🔧 Self-healing in progress...";
+
+
+        try {
+
+            const response = await fetch(
+                API_URL + "/simulate/recover",
+                {
+                    method: "POST"
+                }
+            );
+
+
+            const data = await response.json();
+
+            console.log(data);
+
+
+            healingStatus.innerText =
+                "✅ Service recovered";
+
+
+            // Update dashboard
+
+            await checkHealth();
+
+            await getMetrics();
+
+        }
+
+        catch (error) {
+
+            console.error(error);
+
+            healingStatus.innerText =
+                "❌ Healing failed";
+
+        }
+
+    }
+
+
+    // ==========================================
+    // PREDICTION ENGINE
+    // ==========================================
+
+    function calculateRisk(data) {
+
+        let risk = 0;
+
+
+        if (data.cpu > 70) {
+
+            risk += 30;
+
+        }
+
+
+        if (data.memory > 70) {
+
+            risk += 25;
+
+        }
+
+
+        if (data.response_time_ms > 500) {
+
+            risk += 25;
+
+        }
+
+
+        if (data.error_rate > 3) {
+
+            risk += 20;
+
+        }
+
+
+        const riskElement =
+            document.getElementById("riskLevel");
+
+
+        const predictionText =
+            document.getElementById("predictionText");
+
+
+        if (risk < 30) {
+
+            riskElement.innerText =
+                "Low Risk";
+
+            predictionText.innerText =
+                "Infrastructure is operating normally.";
+
+        }
+
+        else if (risk < 60) {
+
+            riskElement.innerText =
+                "Medium Risk";
+
+            predictionText.innerText =
+                "Some abnormal metrics detected. Monitoring closely.";
+
+        }
+
+        else {
+
+            riskElement.innerText =
+                "HIGH RISK";
+
+            predictionText.innerText =
+                "Potential service failure detected. Self-healing may be required.";
+
+        }
+
+    }
+
+
+    // ==========================================
+    // START DASHBOARD
+    // ==========================================
+
+    getMetrics();
+
+
+    // ==========================================
+    // REFRESH EVERY 5 SECONDS
+    // ==========================================
+
+    setInterval(
+        getMetrics,
+        5000
+    );
+
+</script>
+</body>
+
+</html>
