@@ -2,8 +2,11 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
     <title>SelfHeal AI</title>
 
@@ -70,7 +73,6 @@
             color: #00e5a0;
         }
 
-
         /* =========================
            MAIN
         ========================== */
@@ -80,7 +82,6 @@
 
             padding: 30px;
         }
-
 
         /* =========================
            HEADER
@@ -117,7 +118,6 @@
 
             font-size: 13px;
         }
-
 
         /* =========================
            METRIC CARDS
@@ -168,7 +168,6 @@
             color: #ff5c70;
         }
 
-
         /* =========================
            PROGRESS BAR
         ========================== */
@@ -196,7 +195,6 @@
 
             transition: width 0.5s;
         }
-
 
         /* =========================
            CONTENT GRID
@@ -229,7 +227,6 @@
             margin-bottom: 20px;
         }
 
-
         /* =========================
            SERVICE HEALTH
         ========================== */
@@ -257,7 +254,6 @@
             color: #ff5c70;
         }
 
-
         /* =========================
            PREDICTION
         ========================== */
@@ -276,6 +272,8 @@
             display: flex;
 
             justify-content: space-between;
+
+            gap: 10px;
         }
 
         .risk {
@@ -291,7 +289,6 @@
 
             font-size: 14px;
         }
-
 
         /* =========================
            BUTTON
@@ -310,6 +307,8 @@
 
             margin-top: 15px;
 
+            margin-right: 8px;
+
             cursor: pointer;
 
             font-weight: bold;
@@ -319,6 +318,11 @@
             opacity: 0.85;
         }
 
+        .failure-button {
+            background: #ff6b81;
+
+            color: white;
+        }
 
         /* =========================
            HEALING STATUS
@@ -339,7 +343,6 @@
 
             margin-top: 10px;
         }
-
 
         /* =========================
            RESPONSIVE
@@ -428,7 +431,7 @@
 
 
     <!-- =========================
-         MAIN CONTENT
+         MAIN
     ========================== -->
 
     <div class="main">
@@ -445,7 +448,8 @@
                 </h1>
 
                 <p>
-                    Predictive monitoring & autonomous self-healing
+                    Predictive monitoring &
+                    autonomous self-healing
                 </p>
 
             </div>
@@ -468,8 +472,6 @@
 
         <div class="cards">
 
-
-            <!-- CPU -->
 
             <div class="card">
 
@@ -498,8 +500,6 @@
             </div>
 
 
-            <!-- MEMORY -->
-
             <div class="card">
 
                 <div class="card-title">
@@ -527,8 +527,6 @@
             </div>
 
 
-            <!-- RESPONSE TIME -->
-
             <div class="card">
 
                 <div class="card-title">
@@ -545,8 +543,6 @@
 
             </div>
 
-
-            <!-- ERROR RATE -->
 
             <div class="card">
 
@@ -568,13 +564,11 @@
 
 
         <!-- =========================
-             SERVICE + PREDICTION
+             SERVICE HEALTH
         ========================== -->
 
         <div class="grid">
 
-
-            <!-- SERVICE HEALTH -->
 
             <div class="panel">
 
@@ -583,6 +577,8 @@
                 </h2>
 
 
+                <!-- PAYMENT -->
+
                 <div class="service">
 
                     <span>
@@ -590,15 +586,17 @@
                     </span>
 
                     <span
-                        class="healthy"
-                        id="paymentStatus">
+                        id="paymentStatus"
+                        class="healthy">
 
-                        ● Healthy
+                        ● Checking...
 
                     </span>
 
                 </div>
 
+
+                <!-- ORDER -->
 
                 <div class="service">
 
@@ -606,14 +604,18 @@
                         Order Service
                     </span>
 
-                    <span class="healthy">
+                    <span
+                        id="orderStatus"
+                        class="healthy">
 
-                        ● Healthy
+                        ● Checking...
 
                     </span>
 
                 </div>
 
+
+                <!-- USER -->
 
                 <div class="service">
 
@@ -621,7 +623,9 @@
                         User Service
                     </span>
 
-                    <span class="healthy">
+                    <span
+                        id="userStatus"
+                        class="healthy">
 
                         ● Healthy
 
@@ -632,7 +636,9 @@
             </div>
 
 
-            <!-- PREDICTION -->
+            <!-- =========================
+                 PREDICTION
+            ========================== -->
 
             <div class="panel">
 
@@ -643,7 +649,8 @@
 
                 <div class="prediction">
 
-                    <div class="prediction-title">
+                    <div
+                        class="prediction-title">
 
                         <strong>
                             Payment Service
@@ -692,7 +699,7 @@
             <div class="panel">
 
                 <h2>
-                    🔧 Self-Healing Engine
+                    🔧 Order Service Self-Healing
                 </h2>
 
 
@@ -702,6 +709,7 @@
                         Current Status
                     </p>
 
+
                     <div
                         class="healing-status"
                         id="healingStatus">
@@ -709,13 +717,19 @@
                         ● Monitoring
 
                     </div>
+
+
                     <button
-                    onclick="simulateFailure()">
-                    
-                        Simulate Failure
+                        class="failure-button"
+                        onclick="simulateOrderFailure()">
+
+                        Simulate Order Failure
+
                     </button>
+
+
                     <button
-                        onclick="recoverService()">
+                        onclick="recoverOrderService()">
 
                         Start Self-Healing
 
@@ -733,6 +747,7 @@
                 <h2>
                     📡 Live Monitoring
                 </h2>
+
 
                 <p
                     id="lastUpdate"
@@ -754,355 +769,635 @@
          JAVASCRIPT
     ========================== -->
 
-<script>
-
-    const API_URL = "http://127.0.0.1:8000";
+    <script>
 
 
-    // ==========================================
-    // GET METRICS
-    // ==========================================
+        // ==========================================
+        // BACKEND URLS
+        // ==========================================
 
-    async function getMetrics() {
+        const PAYMENT_API =
+            "http://127.0.0.1:8000";
 
-        try {
-
-            const response = await fetch(
-                API_URL + "/metrics"
-            );
-
-            const data = await response.json();
+        const ORDER_API =
+            "http://127.0.0.1:8001";
 
 
-            // CPU
+        // ==========================================
+        // GET PAYMENT METRICS
+        // ==========================================
 
-            document.getElementById("cpuValue").innerText =
-                data.cpu + "%";
+        async function getMetrics() {
 
-            document.getElementById("cpuBar").style.width =
-                data.cpu + "%";
+            try {
 
-
-            // MEMORY
-
-            document.getElementById("memoryValue").innerText =
-                data.memory + "%";
-
-            document.getElementById("memoryBar").style.width =
-                data.memory + "%";
+                const response =
+                    await fetch(
+                        PAYMENT_API + "/metrics"
+                    );
 
 
-            // RESPONSE TIME
+                if (!response.ok) {
 
-            document.getElementById("responseValue").innerText =
-                data.response_time_ms + " ms";
+                    throw new Error(
+                        "Payment metrics request failed"
+                    );
 
-
-            // ERROR RATE
-
-            document.getElementById("errorValue").innerText =
-                data.error_rate + "%";
+                }
 
 
-            // Calculate prediction
-
-            calculateRisk(data);
-
-
-            // Check service health
-
-            checkHealth();
+                const data =
+                    await response.json();
 
 
-            // Update time
+                // CPU
 
-            document.getElementById("lastUpdate").innerText =
-                "Last update: " +
-                new Date().toLocaleTimeString();
-
-        }
-
-        catch (error) {
-
-            console.error("Metrics error:", error);
-
-            document.getElementById("lastUpdate").innerText =
-                "❌ Backend connection failed";
-
-        }
-
-    }
+                document.getElementById(
+                    "cpuValue"
+                ).innerText =
+                    data.cpu + "%";
 
 
-    // ==========================================
-    // CHECK PAYMENT SERVICE HEALTH
-    // ==========================================
-
-    async function checkHealth() {
-
-        try {
-
-            const response = await fetch(
-                API_URL + "/health"
-            );
-
-            const data = await response.json();
+                document.getElementById(
+                    "cpuBar"
+                ).style.width =
+                    data.cpu + "%";
 
 
-            const paymentStatus =
-                document.getElementById("paymentStatus");
+                // MEMORY
 
-            const systemStatus =
-                document.getElementById("systemStatus");
-
-
-            if (data.status === "healthy") {
-
-                paymentStatus.innerText =
-                    "● Healthy";
-
-                paymentStatus.className =
-                    "healthy";
+                document.getElementById(
+                    "memoryValue"
+                ).innerText =
+                    data.memory + "%";
 
 
-                systemStatus.innerText =
-                    "● System Operational";
+                document.getElementById(
+                    "memoryBar"
+                ).style.width =
+                    data.memory + "%";
 
-                systemStatus.style.color =
-                    "#00e5a0";
+
+                // RESPONSE TIME
+
+                document.getElementById(
+                    "responseValue"
+                ).innerText =
+                    data.response_time_ms + " ms";
+
+
+                // ERROR RATE
+
+                document.getElementById(
+                    "errorValue"
+                ).innerText =
+                    data.error_rate + "%";
+
+
+                // PREDICTION
+
+                calculateRisk(data);
+
+
+                // CHECK BOTH SERVICES
+
+                await checkPaymentHealth();
+
+                await checkOrderHealth();
+
+
+                // UPDATE TIME
+
+                document.getElementById(
+                    "lastUpdate"
+                ).innerText =
+                    "Last update: " +
+                    new Date().toLocaleTimeString();
 
             }
+
+
+            catch (error) {
+
+                console.error(
+                    "Metrics error:",
+                    error
+                );
+
+
+                document.getElementById(
+                    "lastUpdate"
+                ).innerText =
+                    "❌ Backend connection failed";
+
+            }
+
+        }
+
+
+        // ==========================================
+        // PAYMENT SERVICE HEALTH
+        // ==========================================
+
+        async function checkPaymentHealth() {
+
+            const statusElement =
+                document.getElementById(
+                    "paymentStatus"
+                );
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        PAYMENT_API + "/health"
+                    );
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        "Payment health failed"
+                    );
+
+                }
+
+
+                const data =
+                    await response.json();
+
+
+                if (
+                    data.status ===
+                    "healthy"
+                ) {
+
+                    statusElement.innerText =
+                        "● Healthy";
+
+                    statusElement.className =
+                        "healthy";
+
+                }
+
+                else {
+
+                    statusElement.innerText =
+                        "● Unhealthy";
+
+                    statusElement.className =
+                        "unhealthy";
+
+                }
+
+            }
+
+
+            catch (error) {
+
+                console.error(
+                    "Payment health error:",
+                    error
+                );
+
+
+                statusElement.innerText =
+                    "● Offline";
+
+                statusElement.className =
+                    "unhealthy";
+
+            }
+
+        }
+
+
+        // ==========================================
+        // ORDER SERVICE HEALTH
+        // ==========================================
+
+        async function checkOrderHealth() {
+
+            const statusElement =
+                document.getElementById(
+                    "orderStatus"
+                );
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        ORDER_API + "/health"
+                    );
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        "Order health failed"
+                    );
+
+                }
+
+
+                const data =
+                    await response.json();
+
+
+                if (
+                    data.status ===
+                    "healthy"
+                ) {
+
+                    statusElement.innerText =
+                        "● Healthy";
+
+                    statusElement.className =
+                        "healthy";
+
+                }
+
+                else {
+
+                    statusElement.innerText =
+                        "● Unhealthy";
+
+                    statusElement.className =
+                        "unhealthy";
+
+                }
+
+            }
+
+
+            catch (error) {
+
+                console.error(
+                    "Order health error:",
+                    error
+                );
+
+
+                statusElement.innerText =
+                    "● Offline";
+
+                statusElement.className =
+                    "unhealthy";
+
+            }
+
+        }
+
+
+        // ==========================================
+        // SIMULATE ORDER FAILURE
+        // ==========================================
+
+        async function simulateOrderFailure() {
+
+            const healingStatus =
+                document.getElementById(
+                    "healingStatus"
+                );
+
+
+            healingStatus.innerText =
+                "⚠️ Simulating Order Service failure...";
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        ORDER_API +
+                        "/simulate/failure",
+                        {
+                            method: "POST"
+                        }
+                    );
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        "Failure simulation failed"
+                    );
+
+                }
+
+
+                const data =
+                    await response.json();
+
+
+                console.log(data);
+
+
+                healingStatus.innerText =
+                    "❌ Order Service failure detected";
+
+
+                // Update health immediately
+
+                await checkOrderHealth();
+
+            }
+
+
+            catch (error) {
+
+                console.error(
+                    "Order failure error:",
+                    error
+                );
+
+
+                healingStatus.innerText =
+                    "❌ Could not simulate Order Service failure";
+
+            }
+
+        }
+
+
+        // ==========================================
+        // RECOVER ORDER SERVICE
+        // ==========================================
+
+        async function recoverOrderService() {
+
+            const healingStatus =
+                document.getElementById(
+                    "healingStatus"
+                );
+
+
+            healingStatus.innerText =
+                "🔧 Recovering Order Service...";
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        ORDER_API +
+                        "/simulate/recover",
+                        {
+                            method: "POST"
+                        }
+                    );
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        "Recovery request failed"
+                    );
+
+                }
+
+
+                const data =
+                    await response.json();
+
+
+                console.log(data);
+
+
+                // Small delay so user can see
+                // the recovering state
+
+                await new Promise(
+                    resolve =>
+                        setTimeout(
+                            resolve,
+                            800
+                        )
+                );
+
+
+                healingStatus.innerText =
+                    "✅ Order Service recovered";
+
+
+                // Update dashboard
+
+                await checkOrderHealth();
+
+            }
+
+
+            catch (error) {
+
+                console.error(
+                    "Recovery error:",
+                    error
+                );
+
+
+                healingStatus.innerText =
+                    "❌ Order Service healing failed";
+
+            }
+
+        }
+
+
+        // ==========================================
+        // PREDICTION ENGINE
+        // ==========================================
+
+        function calculateRisk(data) {
+
+            let risk = 0;
+
+
+            if (data.cpu > 70) {
+
+                risk += 30;
+
+            }
+
+
+            if (data.memory > 70) {
+
+                risk += 25;
+
+            }
+
+
+            if (
+                data.response_time_ms >
+                500
+            ) {
+
+                risk += 25;
+
+            }
+
+
+            if (
+                data.error_rate >
+                3
+            ) {
+
+                risk += 20;
+
+            }
+
+
+            const riskElement =
+                document.getElementById(
+                    "riskLevel"
+                );
+
+
+            const predictionText =
+                document.getElementById(
+                    "predictionText"
+                );
+
+
+            if (risk < 30) {
+
+                riskElement.innerText =
+                    "Low Risk";
+
+                predictionText.innerText =
+                    "Infrastructure is operating normally.";
+
+            }
+
+
+            else if (risk < 60) {
+
+                riskElement.innerText =
+                    "Medium Risk";
+
+                predictionText.innerText =
+                    "Some abnormal metrics detected. Monitoring closely.";
+
+            }
+
 
             else {
 
-                paymentStatus.innerText =
-                    "● Unhealthy";
+                riskElement.innerText =
+                    "HIGH RISK";
 
-                paymentStatus.className =
-                    "unhealthy";
-
-
-                systemStatus.innerText =
-                    "● Service Failure";
-
-                systemStatus.style.color =
-                    "#ff5c70";
+                predictionText.innerText =
+                    "Potential service failure detected. Self-healing may be required.";
 
             }
 
         }
 
-        catch (error) {
 
-            console.error("Health error:", error);
+        // ==========================================
+        // SYSTEM STATUS
+        // ==========================================
 
-        }
+        async function updateSystemStatus() {
 
-    }
+            try {
 
-
-    // ==========================================
-    // SIMULATE FAILURE
-    // ==========================================
-
-    async function simulateFailure() {
-
-        const healingStatus =
-            document.getElementById("healingStatus");
+                const paymentResponse =
+                    await fetch(
+                        PAYMENT_API + "/health"
+                    );
 
 
-        healingStatus.innerText =
-            "⚠️ Simulating failure...";
+                const orderResponse =
+                    await fetch(
+                        ORDER_API + "/health"
+                    );
 
 
-        try {
+                const paymentData =
+                    await paymentResponse.json();
 
-            const response = await fetch(
-                API_URL + "/simulate/failure",
-                {
-                    method: "POST"
+
+                const orderData =
+                    await orderResponse.json();
+
+
+                const systemStatus =
+                    document.getElementById(
+                        "systemStatus"
+                    );
+
+
+                if (
+                    paymentData.status ===
+                    "healthy"
+                    &&
+                    orderData.status ===
+                    "healthy"
+                ) {
+
+                    systemStatus.innerText =
+                        "● System Operational";
+
+                    systemStatus.style.color =
+                        "#00e5a0";
+
                 }
-            );
 
+                else {
 
-            const data = await response.json();
+                    systemStatus.innerText =
+                        "● Service Failure";
 
-            console.log(data);
+                    systemStatus.style.color =
+                        "#ff5c70";
 
-
-            healingStatus.innerText =
-                "❌ Failure detected";
-
-
-            // Immediately update dashboard
-
-            await checkHealth();
-
-
-            await getMetrics();
-
-        }
-
-        catch (error) {
-
-            console.error(error);
-
-            healingStatus.innerText =
-                "❌ Could not simulate failure";
-
-        }
-
-    }
-
-
-    // ==========================================
-    // SELF HEALING / RECOVER
-    // ==========================================
-
-    async function recoverService() {
-
-        const healingStatus =
-            document.getElementById("healingStatus");
-
-
-        healingStatus.innerText =
-            "🔧 Self-healing in progress...";
-
-
-        try {
-
-            const response = await fetch(
-                API_URL + "/simulate/recover",
-                {
-                    method: "POST"
                 }
-            );
+
+            }
 
 
-            const data = await response.json();
+            catch (error) {
 
-            console.log(data);
+                console.error(
+                    "System status error:",
+                    error
+                );
 
-
-            healingStatus.innerText =
-                "✅ Service recovered";
-
-
-            // Update dashboard
-
-            await checkHealth();
-
-            await getMetrics();
-
-        }
-
-        catch (error) {
-
-            console.error(error);
-
-            healingStatus.innerText =
-                "❌ Healing failed";
-
-        }
-
-    }
-
-
-    // ==========================================
-    // PREDICTION ENGINE
-    // ==========================================
-
-    function calculateRisk(data) {
-
-        let risk = 0;
-
-
-        if (data.cpu > 70) {
-
-            risk += 30;
+            }
 
         }
 
 
-        if (data.memory > 70) {
+        // ==========================================
+        // START DASHBOARD
+        // ==========================================
 
-            risk += 25;
+        getMetrics();
 
-        }
-
-
-        if (data.response_time_ms > 500) {
-
-            risk += 25;
-
-        }
+        updateSystemStatus();
 
 
-        if (data.error_rate > 3) {
+        // ==========================================
+        // REFRESH EVERY 5 SECONDS
+        // ==========================================
 
-            risk += 20;
+        setInterval(
+            async function () {
 
-        }
+                await getMetrics();
 
+                await updateSystemStatus();
 
-        const riskElement =
-            document.getElementById("riskLevel");
-
-
-        const predictionText =
-            document.getElementById("predictionText");
-
-
-        if (risk < 30) {
-
-            riskElement.innerText =
-                "Low Risk";
-
-            predictionText.innerText =
-                "Infrastructure is operating normally.";
-
-        }
-
-        else if (risk < 60) {
-
-            riskElement.innerText =
-                "Medium Risk";
-
-            predictionText.innerText =
-                "Some abnormal metrics detected. Monitoring closely.";
-
-        }
-
-        else {
-
-            riskElement.innerText =
-                "HIGH RISK";
-
-            predictionText.innerText =
-                "Potential service failure detected. Self-healing may be required.";
-
-        }
-
-    }
+            },
+            5000
+        );
 
 
-    // ==========================================
-    // START DASHBOARD
-    // ==========================================
-
-    getMetrics();
+    </script>
 
 
-    // ==========================================
-    // REFRESH EVERY 5 SECONDS
-    // ==========================================
-
-    setInterval(
-        getMetrics,
-        5000
-    );
-
-</script>
 </body>
 
 </html>

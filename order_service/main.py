@@ -1,13 +1,36 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 import random
 
 app = FastAPI(title="Order Service")
+
+
+# ==========================================
+# CORS
+# ==========================================
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=False,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+# ==========================================
+# SERVICE STATUS
+# ==========================================
 
 service_status = {
     "healthy": True,
     "slow": False
 }
 
+
+# ==========================================
+# HOME
+# ==========================================
 
 @app.get("/")
 def home():
@@ -17,8 +40,13 @@ def home():
     }
 
 
+# ==========================================
+# HEALTH
+# ==========================================
+
 @app.get("/health")
 def health():
+
     if not service_status["healthy"]:
         return {
             "service": "order-service",
@@ -31,8 +59,13 @@ def health():
     }
 
 
+# ==========================================
+# METRICS
+# ==========================================
+
 @app.get("/metrics")
 def metrics():
+
     response_time = random.randint(50, 150)
 
     if service_status["slow"]:
@@ -47,8 +80,13 @@ def metrics():
     }
 
 
+# ==========================================
+# SIMULATE FAILURE
+# ==========================================
+
 @app.post("/simulate/failure")
 def simulate_failure():
+
     service_status["healthy"] = False
 
     return {
@@ -57,8 +95,13 @@ def simulate_failure():
     }
 
 
+# ==========================================
+# RECOVER SERVICE
+# ==========================================
+
 @app.post("/simulate/recover")
 def recover():
+
     service_status["healthy"] = True
     service_status["slow"] = False
 
@@ -68,8 +111,13 @@ def recover():
     }
 
 
+# ==========================================
+# SIMULATE SLOW SERVICE
+# ==========================================
+
 @app.post("/simulate/slow")
 def simulate_slow():
+
     service_status["slow"] = True
 
     return {
